@@ -62,6 +62,8 @@ phpcs81:
 phpunit80:
   extends: .php80
   stage: quality
+  services:
+    - redis:latest
   except:
     - main
   script:
@@ -70,6 +72,8 @@ phpunit80:
 phpunit81:
   extends: .php81
   stage: quality
+  services:
+    - redis:latest
   except:
     - main
   script:
