@@ -3,7 +3,9 @@
   "description": "Cache your values",
   "license": "proprietary",
   "require": {
-    "php": "^8.0.0"
+    "php": "^8.0.0",
+
+    "psr/simple-cache": "^3.0.0"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.6.0",
