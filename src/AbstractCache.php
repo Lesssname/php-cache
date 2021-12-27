@@ -11,7 +11,7 @@ abstract class AbstractCache implements CacheInterface
 {
     /**
      * @param iterable<string> $keys
-     * @param null $default
+     * @param mixed $default
      *
      * @return iterable<string, mixed>
      *
@@ -29,6 +29,9 @@ abstract class AbstractCache implements CacheInterface
      * @param int|DateInterval|null $ttl
      *
      * @throws InvalidArgumentException
+     *
+     * @psalm-suppress MixedAssignment unknown values
+     * @psalm-suppress MoreSpecificImplementedParamType $values keys need to be strings
      */
     public function setMultiple(iterable $values, null|int|DateInterval $ttl = null): bool
     {
@@ -42,7 +45,7 @@ abstract class AbstractCache implements CacheInterface
     }
 
     /**
-     * @param iterable<int, string> $keys
+     * @param iterable<string> $keys
      *
      * @throws InvalidArgumentException
      */
