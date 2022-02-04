@@ -10,7 +10,7 @@ use Redis;
 
 final class RedisCache extends AbstractCache
 {
-    public function __construct(private Redis $redis)
+    public function __construct(private readonly Redis $redis)
     {}
 
     public function get(string $key, mixed $default = null): mixed
