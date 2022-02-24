@@ -17,7 +17,7 @@ final class RedisCache extends AbstractCache
     {
         $value = $this->redis->get($key);
 
-        if ($value === false) {
+        if (!is_string($value)) {
             return $default;
         }
 
@@ -34,10 +34,10 @@ final class RedisCache extends AbstractCache
                 $ttl = $expires->getTimestamp() - $now->getTimestamp();
             }
 
-            return $this->redis->setEx($key, $ttl, serialize($value));
+            return $this->redis->setEx($key, $ttl, serialize($value)) === true;
         }
 
-        return $this->redis->set($key, serialize($value));
+        return $this->redis->set($key, serialize($value)) === true;
     }
 
     public function delete(string $key): bool

@@ -3,11 +3,19 @@ declare(strict_types=1);
 
 namespace LessCache\Redis;
 
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Redis;
 
 final class RedisFactory
 {
+    /**
+     * @psalm-suppress InvalidArgument invalid stub
+     *
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function __invoke(ContainerInterface $container): Redis
     {
         $config = $container->get('config');
