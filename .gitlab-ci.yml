@@ -24,6 +24,7 @@ phpstan81:
   stage: quality
   except:
     - main
+    - tags
   script:
     - ./vendor/bin/phpstan analyse -c phpstan.neon
 
@@ -34,6 +35,7 @@ phpcs81:
   stage: quality
   except:
     - main
+    - tags
   script:
     - ./vendor/bin/phpcs --standard=./phpcs.xml
 
@@ -46,6 +48,7 @@ phpunit81:
     - redis:latest
   except:
     - main
+    - tags
   script:
     - ./vendor/bin/phpunit -c phpunit.xml --do-not-cache-result
 
@@ -56,6 +59,7 @@ psalm81:
   stage: quality
   except:
     - main
+    - tags
   script:
     - ./vendor/bin/psalm
 
