@@ -5,6 +5,9 @@ namespace LessCache;
 
 use DateInterval;
 
+/**
+ * Cache that does nothing
+ */
 final class NullableCache extends AbstractCache
 {
     public function get(string $key, mixed $default = null): mixed
