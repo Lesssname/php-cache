@@ -5,7 +5,6 @@ namespace LessCacheTest;
 
 use LessCache\AbstractCache;
 use PHPUnit\Framework\TestCase;
-use Traversable;
 
 /**
  * @covers \LessCache\AbstractCache
@@ -14,28 +13,31 @@ final class AbstractCacheTest extends TestCase
 {
     public function testGetMultiple(): void
     {
-        $cache = $this->getMockForAbstractClass(AbstractCache::class);
+        $cache = $this
+            ->getMockBuilder(AbstractCache::class)
+            ->onlyMethods(['get', 'set', 'clear', 'delete', 'has'])
+            ->getMock();
+
         $cache
             ->expects(self::exactly(2))
             ->method('get')
-            ->withConsecutive(
-                ['fiz', 'foo'],
-                ['biz', 'foo'],
-            )
-            ->willReturnOnConsecutiveCalls('foo', 'foo');
+            ->willReturnMap(
+                [
+                    ['fiz', 'foo', 'ziz'],
+                    ['biz', 'foo', 'foo'],
+                ],
+            );
 
         $results = $cache->getMultiple(
             ['fiz', 'biz'],
             'foo',
         );
 
-        $results = $results instanceof Traversable
-            ? iterator_to_array($results)
-            : $results;
+        $results = iterator_to_array($results);
 
         self::assertSame(
             [
-                'fiz' => 'foo',
+                'fiz' => 'ziz',
                 'biz' => 'foo',
             ],
             $results,
@@ -44,15 +46,19 @@ final class AbstractCacheTest extends TestCase
 
     public function testSetMultiple(): void
     {
-        $cache = $this->getMockForAbstractClass(AbstractCache::class);
+        $cache = $this
+            ->getMockBuilder(AbstractCache::class)
+            ->onlyMethods(['get', 'set', 'clear', 'delete', 'has'])
+            ->getMock();
         $cache
             ->expects(self::exactly(2))
             ->method('set')
-            ->withConsecutive(
-                ['fiz', 'foo', 123],
-                ['biz', 'bar', 123],
-            )
-            ->willReturnOnConsecutiveCalls(true, true);
+            ->willReturnMap(
+                [
+                    ['fiz', 'foo', 123, true],
+                    ['biz', 'bar', 123, true],
+                ],
+            );
 
         $result = $cache->setMultiple(
             [
@@ -67,15 +73,19 @@ final class AbstractCacheTest extends TestCase
 
     public function testSetMultipleFailure(): void
     {
-        $cache = $this->getMockForAbstractClass(AbstractCache::class);
+        $cache = $this
+            ->getMockBuilder(AbstractCache::class)
+            ->onlyMethods(['get', 'set', 'clear', 'delete', 'has'])
+            ->getMock();
         $cache
             ->expects(self::exactly(2))
             ->method('set')
-            ->withConsecutive(
-                ['fiz', 'foo', 123],
-                ['biz', 'bar', 123],
-            )
-            ->willReturnOnConsecutiveCalls(true, false);
+            ->willReturnMap(
+                [
+                    ['fiz', 'foo', 123, true],
+                    ['biz', 'bar', 123, false],
+                ],
+            );
 
         $result = $cache->setMultiple(
             [
@@ -91,12 +101,19 @@ final class AbstractCacheTest extends TestCase
 
     public function testDeleteMultiple(): void
     {
-        $cache = $this->getMockForAbstractClass(AbstractCache::class);
+        $cache = $this
+            ->getMockBuilder(AbstractCache::class)
+            ->onlyMethods(['get', 'set', 'clear', 'delete', 'has'])
+            ->getMock();
         $cache
             ->expects(self::exactly(2))
             ->method('delete')
-            ->withConsecutive(['fiz'], ['biz'])
-            ->willReturnOnConsecutiveCalls(true, true);
+            ->willReturnMap(
+                [
+                    ['fiz', true],
+                    ['biz', true],
+                ],
+            );
 
         $result = $cache->deleteMultiple(['fiz', 'biz']);
 
@@ -105,12 +122,19 @@ final class AbstractCacheTest extends TestCase
 
     public function testDeleteMultipleFailure(): void
     {
-        $cache = $this->getMockForAbstractClass(AbstractCache::class);
+        $cache = $this
+            ->getMockBuilder(AbstractCache::class)
+            ->onlyMethods(['get', 'set', 'clear', 'delete', 'has'])
+            ->getMock();
         $cache
             ->expects(self::exactly(2))
             ->method('delete')
-            ->withConsecutive(['fiz'], ['biz'])
-            ->willReturnOnConsecutiveCalls(true, false);
+            ->willReturnMap(
+                [
+                    ['fiz', true],
+                    ['biz', false],
+                ],
+            );
 
         $result = $cache->deleteMultiple(['fiz', 'biz', 'miz']);
 
