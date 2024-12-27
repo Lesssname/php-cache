@@ -76,7 +76,7 @@ final class RedisCacheTest extends TestCase
             ->expects(self::once())
             ->method('del')
             ->with('bar')
-            ->willReturn(true);
+            ->willReturn(0);
 
         $redisCache = new RedisCache($redis);
         self::assertTrue($redisCache->delete('bar'));
